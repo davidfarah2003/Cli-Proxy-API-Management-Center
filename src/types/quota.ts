@@ -516,6 +516,27 @@ export interface CursorModelSpend {
   cacheWriteTokens: number;
 }
 
+export interface CursorAgentUsage {
+  currentPeriodStart?: string;
+  nextResetTimestampUtc?: string;
+  usagePercent?: number | string;
+  hasAvailableUsage?: boolean;
+  hasNonZeroIncludedLimit?: boolean;
+}
+
+export interface CursorFastRequests {
+  requestQuota?: number | string;
+}
+
+/** Cursor's agent product runs on its own weekly window. */
+export interface CursorAgentWindow {
+  usedPercent: number | null;
+  remainingPercent: number | null;
+  resetAtMs: number | null;
+  periodHours: number | null;
+  exhausted: boolean;
+}
+
 export interface CursorQuotaSummary {
   planName: string | null;
   planPrice: string | null;
@@ -533,6 +554,8 @@ export interface CursorQuotaSummary {
   periodHours: number | null;
   models: CursorModelSpend[];
   totalSpendCents: number | null;
+  agent: CursorAgentWindow | null;
+  fastRequestQuota: number | null;
 }
 
 export interface CursorQuotaState {
