@@ -21,6 +21,12 @@ export interface ApiCallResult<T = unknown> {
   body: T | null;
 }
 
+export interface ResetQuotaResult {
+  status: string;
+  auth_index: string;
+  models: string[];
+}
+
 const normalizeBody = (input: unknown): { bodyText: string; body: unknown | null } => {
   if (input === undefined || input === null) {
     return { bodyText: '', body: null };
@@ -89,4 +95,6 @@ export const apiCallApi = {
       body,
     };
   },
+  resetQuota: async (authIndex: string): Promise<ResetQuotaResult> =>
+    apiClient.post<ResetQuotaResult>('/reset-quota', { auth_index: authIndex }),
 };

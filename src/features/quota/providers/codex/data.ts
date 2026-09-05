@@ -444,7 +444,13 @@ const consumeCodexRateLimitResetCredit = async (
 };
 
 const resetCodexQuota = async (file: AuthFileItem, t: TFunction): Promise<CodexQuotaData> => {
+  const authIndex = normalizeAuthIndex(file['auth_index'] ?? file.authIndex);
+  if (!authIndex) {
+    throw new Error(t('codex_quota.missing_auth_index'));
+  }
+
   await consumeCodexRateLimitResetCredit(file, t);
+  await apiCallApi.resetQuota(authIndex);
   return fetchCodexQuota(file, t);
 };
 
